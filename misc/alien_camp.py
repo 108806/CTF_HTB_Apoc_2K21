@@ -9,27 +9,26 @@ s.connect((HOST, PORT))
 def netWulff(sock:socket.SOCK_STREAM):
 	
 	res 			= 		sock.recv(4096).decode('raw_unicode_escape')
-	#print(res)
+
 	sock.send(b'1\n')
 	help_str 		= 		sock.recv(8192)
 	help_str 		+= 		sock.recv(8192)
 	help_str 		= 		help_str.replace(b'\x0a', b'')[22:]
 	help_str		= 		help_str.replace(b'\x09', b'')
 	help_str 		= 		help_str.replace(b'r', b'')
-	#print(help_str)
+
 	arr			= 		np.array(help_str)
 
 	regex 			= 		b'[x0123456789abcdef].{3,}\s->\s\d\d\s'
 	result 			= 		re.findall(regex,arr)
 	nice 			= 		str(result)[2:-2]
-	#print(f'\n[*] {nice}')
+
 	regex2 			= 		r'[^x][\s\d\d\s]{3,}'
 	fin			= 		re.findall(regex2, nice)
 	fin 			= 		iter(tuple(int(x[1:-1].strip('')) for x in fin))
-	#print(fin)
+
 
 	u 			= 		{
-
 	1 : '🌞', 2 : '🍨', 3 : '❌', 4 : '🍪',
 	5 : '🔥', 6 : '⛔', 7 : '🍧',  8 : '👺',
 	9 : '👾', 10 : '🦄'
@@ -60,7 +59,6 @@ def netWulff(sock:socket.SOCK_STREAM):
 	witnessmey 		= 		0
 	while b'HTB' not in chall:
 		c_dead 		= 		chall.decode('utf8')
-
 
 		presents 	= 		[x for x in c_dead.split() if x in solvr.keys() or x in ops]
 		presents2 	= 		[solvr.get(x) or x for x in presents]
